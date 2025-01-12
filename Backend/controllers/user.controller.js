@@ -1,4 +1,4 @@
-//all the functions that are called when the routes are hit are defined in the controllers
+//all the functions that are called when the user routes are hit are defined in the controllers
 
 const userModel = require("../models/user.model");
 const userService = require("../services/user.service");
@@ -14,6 +14,13 @@ module.exports.registerUser = async (req, res, next) => {
   }
 
   const { fullname, email, password } = req.body;
+  
+  const isUserAlreadyExists = await userModel.findOne({
+    email,
+  });
+  if (isUserAlreadyExists) {
+    return res.status(400).json({ message: "User already exists" });
+  }
   const hashedPassword = await userModel.hashPassword(password);
   //here as we are using the static method we can call it on the model itself
   const user = await userService.createUser({

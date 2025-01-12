@@ -105,3 +105,123 @@ Log out the current user and invalidate their token.
   "message": "Successfully logged out"
 }
 ```
+
+## Captains Endpoint
+
+### POST /captains/login
+Login for captains.
+
+**Request Body:**
+```json
+{
+  "email": "captain@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+```json
+{
+  "captain": {
+    "_id": "string",
+    "fullname": {
+      "firstname": "string",
+      "lastname": "string"
+    },
+    "email": "string",
+    "vehicle": {
+      "color": "string",
+      "plate": "string",
+      "capacity": "number",
+      "vehicleType": "car|motorcycle|auto"
+    },
+    "status": "active|inactive"
+  },
+  "token": "JWT_TOKEN"
+}
+```
+
+### POST /captains/register
+Register a new captain.
+
+**Request Body:**
+```json
+{
+  "fullname": {
+    "firstname": "string",
+    "lastname": "string"
+  },
+  "email": "string",
+  "password": "string",
+  "vehicle": {
+    "color": "string",
+    "plate": "string",
+    "capacity": "number",
+    "vehicleType": "car|motorcycle|auto"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "captain": {
+    "_id": "string",
+    "fullname": {
+      "firstname": "string",
+      "lastname": "string"
+    },
+    "email": "string",
+    "vehicle": {
+      "color": "string",
+      "plate": "string",
+      "capacity": "number",
+      "vehicleType": "car|motorcycle|auto"
+    },
+    "status": "inactive"
+  },
+  "token": "JWT_TOKEN"
+}
+```
+
+### GET /captains/profile
+Get the captain's profile information.
+
+**Headers:**
+- Authorization: Bearer {token}
+
+**Response:**
+```json
+{
+  "_id": "string",
+  "fullname": {
+    "firstname": "string",
+    "lastname": "string"
+  },
+  "email": "string",
+  "vehicle": {
+    "color": "string",
+    "plate": "string",
+    "capacity": "number",
+    "vehicleType": "string"
+  },
+  "status": "string",
+  "location": {
+    "lat": "number",
+    "lng": "number"
+  }
+}
+```
+
+### GET /captains/logout
+Log out the captain and invalidate their token.
+
+**Headers:**
+- Authorization: Bearer {token}
+
+**Response:**
+```json
+{
+  "message": "Logged out successfully"
+}
+```
