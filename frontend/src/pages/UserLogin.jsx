@@ -14,7 +14,6 @@ const UserLogin = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // eslint-disable-next-line no-unused-vars
     const userData = {
       email: email,
       password: password
