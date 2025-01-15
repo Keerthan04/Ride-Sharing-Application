@@ -3,13 +3,23 @@ import {useGSAP} from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
+import VehiclePanel from "../components/VehiclePanel";
+import ConfirmedRide from "../components/ConfirmedRide";
+import LookingForDriver from "../components/LookingForDriver";
 
 const Home = () => {
     const [pickup, setPickup] = useState('');
     const [destination, setDestination] = useState('');
     const [panelOpen,setPanelOpen] = useState(false);
+    const [vehiclePanelOpen, setvehiclePanelOpen] = useState(false);
+    const [confirmRidePanel, setconfirmRidePanel] = useState(false);
+    const [vehicleFound, setvehicleFound] = useState(false);
+
     const panelRef = useRef(null);
     const panelCloseRef = useRef(null);
+    const vehiclePanelRef = useRef(null);
+    const confirmRidePanelRef = useRef(null);
+    const vehicleFoundRef = useRef(null);
     //so useRef is used to get the reference of the element in the dom
 
     const submitHandler = (e) => {
@@ -18,6 +28,7 @@ const Home = () => {
 
     //useGSAP hook we use to make animations
     //to make the effect of panel open and close
+    //this one is to open the locations panel on click of the input fields
     useGSAP(
       function () {
         if (panelOpen) {
@@ -41,6 +52,54 @@ const Home = () => {
         }
       },
       [panelOpen]
+    );
+    
+    //this is to transform the vehicle panel(auto car motor wala) when location is clicked so for the panel ref is there and state in location search panel to be true when clicked
+    useGSAP(
+      function () {
+        if (vehiclePanelOpen) {
+          gsap.to(vehiclePanelRef.current, {
+            transform: "translateY(0)",
+          });
+        } else {
+          gsap.to(vehiclePanelRef.current, {
+            transform: "translateY(100%)",
+          });
+        }
+      },
+      [vehiclePanelOpen]
+    );
+
+    //this one is to handle the confirmed ride panel(after the click on any auto motor or car) then this will open so to handle close and open this is used
+    useGSAP(
+      function () {
+        if (confirmRidePanel) {
+          gsap.to(confirmRidePanelRef.current, {
+            transform: "translateY(0)",
+          });
+        } else {
+          gsap.to(confirmRidePanelRef.current, {
+            transform: "translateY(100%)",
+          });
+        }
+      },
+      [confirmRidePanel]
+    );
+
+    //this is to handle the looking for driver panel
+    useGSAP(
+      function () {
+        if (vehicleFound) {
+          gsap.to(vehicleFoundRef.current, {
+            transform: "translateY(0)",
+          });
+        } else {
+          gsap.to(vehicleFoundRef.current, {
+            transform: "translateY(100%)",
+          });
+        }
+      },
+      [vehicleFound]
     );
 
   return (
@@ -95,73 +154,42 @@ const Home = () => {
           </button>
         </div>
         <div ref={panelRef} className=" bg-white h-0">
-          <LocationSearchPanel />
+          <LocationSearchPanel
+            setvehiclePanelOpen={setvehiclePanelOpen}
+            setPanelOpen={setPanelOpen}
+          />
         </div>
       </div>
-      <div className="fixed w-full z-10 bottom-0 bg-white px-3 py-6">
-        <h3 className="text-xl font-semibold mb-3">Choose your ride</h3>
-        <div className="flex border-2 border-black mb-2 rounded-xl w-full p-3  items-center justify-between">
-          <img
-            className="h-12"
-            src="https://swyft.pl/wp-content/uploads/2023/05/how-many-people-can-a-uberx-take.jpg"
-            alt=""
-          />
-          <div className=" w-1/2">
-            <h4 className="font-medium text-base">
-              UberGo{" "}
-              <span>
-                <i className="ri-user-3-fill"></i>4
-              </span>
-            </h4>
-            <h5 className="font-medium text-sm">2 mins away</h5>
-            <p className="font-normal text-xs text-gray-600">
-              Affordable, compact rides
-            </p>
-          </div>
-          <h2 className="text-xl font-semibold">193.20</h2>
-        </div>
+      {/* vehicle panel */}
+      <div
+        //ref to open the panel of vehicle
+        ref={vehiclePanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
+      >
+        {/* this is the vehicle panel(car, auto, motor) */}
+        <VehiclePanel
+          setconfirmRidePanel={setconfirmRidePanel}
+          setvehiclePanelOpen={setvehiclePanelOpen}
+        />
+      </div>
 
-        <div className="flex border-2 border-black mb-2 rounded-xl w-full p-3  items-center justify-between">
-          <img
-            className="h-12"
-            src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1649231091/assets/2c/7fa194-c954-49b2-9c6d-a3b8601370f5/original/Uber_Moto_Orange_312x208_pixels_Mobile.png"
-            alt=""
-          />
-          <div className=" w-1/2">
-            <h4 className="font-medium text-base">
-              Moto{" "}
-              <span>
-                <i className="ri-user-3-fill"></i>1
-              </span>
-            </h4>
-            <h5 className="font-medium text-sm">3 mins away</h5>
-            <p className="font-normal text-xs text-gray-600">
-              Affordable MotorCycle rides
-            </p>
-          </div>
-          <h2 className="text-xl font-semibold">65.17</h2>
-        </div>
+      {/* confirmed ride panel */}
+      <div
+        //ref to open the panel of ride wala once confirmed which vehicle
+        ref={confirmRidePanelRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
+      >
+        {/* this is the confirmed ride panel */}
+        <ConfirmedRide setconfirmRidePanel={setconfirmRidePanel} setvehicleFound={setvehicleFound}/>
+      </div>
 
-        <div className="flex border-2 border-black mb-2 rounded-xl w-full p-3  items-center justify-between">
-          <img
-            className="h-12"
-            src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_368,w_552/v1648431773/assets/1d/db8c56-0204-4ce4-81ce-56a11a07fe98/original/Uber_Auto_558x372_pixels_Desktop.png"
-            alt=""
-          />
-          <div className=" w-1/2">
-            <h4 className="font-medium text-base">
-              UberAuto{" "}
-              <span>
-                <i className="ri-user-3-fill"></i>3
-              </span>
-            </h4>
-            <h5 className="font-medium text-sm">2 mins away</h5>
-            <p className="font-normal text-xs text-gray-600">
-              Affordable Auto Rides
-            </p>
-          </div>
-          <h2 className="text-xl font-semibold">118.21</h2>
-        </div>
+      {/* this is the Looking for a Driver panel */}
+      <div
+        //ref to open the panel of looking for driver
+        ref={vehicleFoundRef}
+        className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
+      >
+        <LookingForDriver setvehicleFound={setvehicleFound} />
       </div>
     </div>
   );
