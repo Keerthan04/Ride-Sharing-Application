@@ -6,6 +6,7 @@ import LocationSearchPanel from "../components/LocationSearchPanel";
 import VehiclePanel from "../components/VehiclePanel";
 import ConfirmedRide from "../components/ConfirmedRide";
 import LookingForDriver from "../components/LookingForDriver";
+import WaitingForDriver from "../components/WaitingForDriver";
 
 const Home = () => {
     const [pickup, setPickup] = useState('');
@@ -14,12 +15,14 @@ const Home = () => {
     const [vehiclePanelOpen, setvehiclePanelOpen] = useState(false);
     const [confirmRidePanel, setconfirmRidePanel] = useState(false);
     const [vehicleFound, setvehicleFound] = useState(false);
+    const [waitingForDriver, setWaitingForDriver] = useState(false);
 
     const panelRef = useRef(null);
     const panelCloseRef = useRef(null);
     const vehiclePanelRef = useRef(null);
     const confirmRidePanelRef = useRef(null);
     const vehicleFoundRef = useRef(null);
+    const waitingForDriverRef = useRef(null);
     //so useRef is used to get the reference of the element in the dom
 
     const submitHandler = (e) => {
@@ -102,6 +105,22 @@ const Home = () => {
       [vehicleFound]
     );
 
+    //this is to handle the waiting for driver panel
+    useGSAP(
+      function () {
+        if (waitingForDriver) {
+          gsap.to(waitingForDriverRef.current, {
+            transform: "translateY(0)",
+          });
+        } else {
+          gsap.to(waitingForDriverRef.current, {
+            transform: "translateY(100%)",
+          });
+        }
+      },
+      [waitingForDriver]
+    );
+
   return (
     <div className="h-screen relative overflow-hidden">
       <img
@@ -160,6 +179,7 @@ const Home = () => {
           />
         </div>
       </div>
+
       {/* vehicle panel */}
       <div
         //ref to open the panel of vehicle
@@ -191,6 +211,11 @@ const Home = () => {
       >
         <LookingForDriver setvehicleFound={setvehicleFound} />
       </div>
+
+      {/* this is the waiting for driver panel */}
+        <div ref={waitingForDriverRef} className='fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12'>
+          <WaitingForDriver setWaitingForDriver={setWaitingForDriver} setvehicleFound={setvehicleFound} waitingForDriver={waitingForDriver}/>
+        </div>
     </div>
   );
 };
