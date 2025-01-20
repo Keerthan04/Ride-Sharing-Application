@@ -5,9 +5,12 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 const connectToDb = require('./db/db');
+
+//all routes
 const userRoutes = require('./routes/user.routes');
 const captainRoutes = require('./routes/captain.routes');
 const mapRoutes = require('./routes/maps.routes');
+const rideRoutes = require('./routes/ride.routes');
 
 //connect to the database
 connectToDb();
@@ -26,6 +29,8 @@ app.get('/',(req,res)=>{
 app.use('/users',userRoutes);
 app.use('/captains',captainRoutes);
 app.use('/maps',mapRoutes);
+app.use('/rides',rideRoutes);
+
 
 
 //!basic idea is(IMPORTANT): route -> controller -> service

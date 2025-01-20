@@ -2,12 +2,17 @@
 const express = require('express');
 const router = express.Router();
 const {body} = require('express-validator');
+const rideController = require('../controllers/ride.controller');
+const authMiddleware = require('../middlewares/auth.middleware');
 
-//create ride(so take userId, source, destination)
+//create ride(so take  source, destination, vehicle type)
+//and use the authUser middleware to check if the user is authenticated and also will get userId from there
 router.post('/create',
-    body('userId').isString().isLength({min: 24, max: 24}).withMessage('Invalid user id'),
+    authMiddleware.authUser,
     body('pickup').isString().isLength({min: 3}).withMessage('Invalid pickup address'),
     body('destination').isString().isLength({min: 1}).withMessage('Invalid destination address'),
+    body('vehicleType').isString().isIn(['auto', 'car', 'moto']).withMessage('Invalid vehicle type'),
+    rideController.createRide
 )
 
 module.exports = router;

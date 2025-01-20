@@ -48,6 +48,8 @@ const rideSchema = new mongoose.Schema({
     type: String,
   },
   //all these three above to maintain the payment details
+
+  //so when created we will send otp to the user that he shd use so stored here
   otp: {
     type: String,
     select: false,
