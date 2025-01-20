@@ -49,6 +49,7 @@ async function calculateFare(pickup, destination) {
 
     return fare;
 }
+module.exports.getFare = calculateFare;
 
 //once ride is complete or created we need to send otp to the user
 function getOtp(num){

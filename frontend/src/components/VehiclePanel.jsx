@@ -1,7 +1,16 @@
+/* eslint-disable react/prop-types */
+
 //the car, auto, motor wala panel component to show and on click shd go to details and this will be shown when clicked on location
 
-// eslint-disable-next-line react/prop-types
-const VehiclePanel = ({ setvehiclePanelOpen, setconfirmRidePanel }) => {
+
+//so once pickup and destination is selected and find trip button is clicked then this panel will open up to select the vehicle type(the fares got using the backend api) and then on click of any vehicle the confirm ride panel will open up with the details of the selected vehicle and the pickup and destination details
+
+const VehiclePanel = ({
+  setvehiclePanelOpen,
+  setconfirmRidePanel,
+  fare,
+  selectVehicle,//so on click of the vehicle that is set up in the vechicletype state in home.jsx that will be passed to the confirm ride panel then
+}) => {
   return (
     <div>
       <h5
@@ -12,9 +21,14 @@ const VehiclePanel = ({ setvehiclePanelOpen, setconfirmRidePanel }) => {
         <i className="ri-arrow-down-wide-line text-xl text-black" />
       </h5>
       <h3 className="text-xl font-semibold mb-3">Choose your ride</h3>
+
+      {/* car card */}
       <div
         // on click on any vehicle this will go to the details of that vehicle panel to open
-        onClick={() => setconfirmRidePanel(true)}
+        onClick={() => {
+          setconfirmRidePanel(true);
+          selectVehicle("car"); //so that the selected vehicle is shown in the confirm ride panel
+        }}
         className="flex border-2 active:border-black mb-2 rounded-xl w-full p-3  items-center justify-between"
       >
         <img
@@ -34,11 +48,16 @@ const VehiclePanel = ({ setvehiclePanelOpen, setconfirmRidePanel }) => {
             Affordable, compact rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">193.20</h2>
+        <h2 className="text-xl font-semibold">₹{fare.car}</h2>
       </div>
 
+
+      {/* moto card */}
       <div
-        onClick={() => setconfirmRidePanel(true)}
+        onClick={() => {
+          setconfirmRidePanel(true);
+          selectVehicle("moto");
+        }}
         className="flex border-2 active:border-black mb-2 rounded-xl w-full p-3  items-center justify-between"
       >
         <img
@@ -58,11 +77,15 @@ const VehiclePanel = ({ setvehiclePanelOpen, setconfirmRidePanel }) => {
             Affordable MotorCycle rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">65.17</h2>
+        <h2 className="text-xl font-semibold">₹{fare.moto}</h2>
       </div>
 
+      {/* auto card */}
       <div
-        onClick={() => setconfirmRidePanel(true)}
+        onClick={() => {
+          setconfirmRidePanel(true);
+          selectVehicle("auto");
+        }}
         className="flex border-2 active:border-black mb-2 rounded-xl w-full p-3  items-center justify-between"
       >
         <img
@@ -82,10 +105,10 @@ const VehiclePanel = ({ setvehiclePanelOpen, setconfirmRidePanel }) => {
             Affordable Auto Rides
           </p>
         </div>
-        <h2 className="text-xl font-semibold">118.21</h2>
+        <h2 className="text-xl font-semibold">₹{fare.auto}</h2>
       </div>
     </div>
   );
-}
+};
 
 export default VehiclePanel
