@@ -54,7 +54,9 @@ module.exports.loginCaptain = async (req, res, next) => {
 }
 
 module.exports.getCaptainProfile = async (req, res, next) => {
-    res.status(200).json( req.captain );
+    console.log('captain in get captain profile',req.captain);
+    res.status(200).json({ captain : req.captain });
+    //!IMPORTANT since we are accessing in the frontend directly with req.captain but here if just req.captain sent then it will not be accessible in the frontend so we need to send it as an object and name it as captain
 }
 
 module.exports.logoutCaptain = async (req, res, next) => {

@@ -91,6 +91,25 @@ const Home = () => {
       setFare(response.data);
     }
 
+    //so once the user selects the vehicle it will be stored in the vehicle type state so use that and then we will create the ride
+    async function createRide() {
+      //no response handling as of now
+      await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/rides/create`,
+        {
+          pickup,
+          destination,
+          vehicleType,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+    }
+
+
 
     const submitHandler = (e) => {
         e.preventDefault();
@@ -289,6 +308,11 @@ const Home = () => {
       >
         {/* this is the confirmed ride panel */}
         <ConfirmedRide
+          createRide={createRide}
+          pickup={pickup}
+          destination={destination}
+          vehicleType={vehicleType}
+          fare={fare}
           setconfirmRidePanel={setconfirmRidePanel}
           setvehicleFound={setvehicleFound}
         />
@@ -300,7 +324,13 @@ const Home = () => {
         ref={vehicleFoundRef}
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-14"
       >
-        <LookingForDriver setvehicleFound={setvehicleFound} />
+        <LookingForDriver
+          pickup={pickup}
+          destination={destination}
+          vehicleType={vehicleType}
+          fare={fare}
+          setvehicleFound={setvehicleFound}
+        />
       </div>
 
       {/* this is the waiting for driver panel */}
