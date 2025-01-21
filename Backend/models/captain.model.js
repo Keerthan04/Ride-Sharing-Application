@@ -62,7 +62,7 @@ const captainSchema = new mongoose.Schema({//creating a schema for the user mode
     },
 
     location:{
-        lat:{
+        ltd:{
             type:Number,
         },
         lng:{

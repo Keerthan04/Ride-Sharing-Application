@@ -1,5 +1,5 @@
 const axios = require('axios');
-
+const captainModel = require('../models/captain.model');
 
 
 //to handle the api call where we will get the coordinates of the address
@@ -79,4 +79,21 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
     console.error(err);
     throw err;
   }
+};
+
+
+//so what we do is when ever ride is created and stored in backend we need to send the notification for all the captains in the radius of that pickup location so that they can accept the ride so for that we need to get all the captains near that location and for that we use this function
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
+  // radius in km
+
+  //mongodb does this and gives us we just use it
+  const captains = await captainModel.find({
+    location: {
+      $geoWithin: {
+        $centerSphere: [[ltd, lng], radius / 6371],
+      },
+    },
+  });
+
+  return captains;
 };

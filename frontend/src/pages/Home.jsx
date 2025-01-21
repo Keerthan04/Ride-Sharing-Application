@@ -1,4 +1,4 @@
-import { useState,useRef } from "react";
+import { useState,useRef,useContext,useEffect } from "react";
 import {useGSAP} from "@gsap/react";
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
@@ -8,6 +8,8 @@ import ConfirmedRide from "../components/ConfirmedRide";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
 import axios from "axios";
+import {SocketContext} from "../context/SocketContext";
+import {UserDataContext} from "../context/UserContext";
 
 const Home = () => {
     //all the states are used to handle the state of the application
@@ -34,9 +36,18 @@ const Home = () => {
     const waitingForDriverRef = useRef(null);
     //so useRef is used to get the reference of the element in the dom
 
+    //Socket Information
+    const { socket } = useContext(SocketContext);
+    const { user } = useContext(UserDataContext);
+    //so here since home of user is only for logged in users what we do is we join the room with the user type and user id so that we store the socketId of the user in the database(so this happens every time the component is mounted so that we can get the socketId of the user)
+    useEffect(() => {
+      socket.emit("join", { userType: "user", userId: user._id });
+    }, [socket, user]);
+
+
+
     //Todo->on each letter change the request is going to the backend(so too many requests are going so we need to optimize this(like debouncing))
     //so for both it is the input as query params so we are using the same function(same input in params and sending the response)
-
     const handlePickupChange = async (e) => {
       setPickup(e.target.value);
       try {

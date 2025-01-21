@@ -2,6 +2,7 @@
 
 //when on click on the confirm ride on the confirm ride panel then this will be called and once the captain accepts the ride then done
 
+//when this panel comes, the captain should get the notification of the ride and the panel for him to accept or decline the ride should come up so for this we use Socket.io
 
 const LookingForDriver = ({
   setvehicleFound,
