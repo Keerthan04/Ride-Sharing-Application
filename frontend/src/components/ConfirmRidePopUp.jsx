@@ -1,14 +1,39 @@
 /* eslint-disable react/prop-types */
-//for the captain once accepted the ride then to show this
+//for the captain once accepted the ride then to show this where he will be asked to enter the otp to start the ride and then actual ride will be started and the map will be shown to location
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const ConfirmRidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel }) => {
+const ConfirmRidePopUp = ({ 
+  setRidePopupPanel, 
+  setConfirmRidePopupPanel,
+  ride,
+}) => {
 
     const [otp, setOtp] = useState("");
-    const submitHander = (e) => {
+    const navigate = useNavigate();
+
+
+    const submitHander = async (e) => {
         e.preventDefault();
 
+        //so on putting otp and then click on confirm we will send the otp and ride id to the server to start the ride and then the ride will be started and captain will be redirected to the riding page where basically the map will be shown
+        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/rides/start-ride`, {
+            params: {
+                rideId: ride._id,
+                otp: otp
+            },
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+
+        if (response.status === 200) {
+            setConfirmRidePopupPanel(false)
+            setRidePopupPanel(false)
+            //to redirect the captain to the riding page and send the ride data to the riding page as state variable
+            navigate('/captain-riding', { state: { ride: ride } })
+        }
     }
   return (
     <div>
@@ -31,8 +56,7 @@ const ConfirmRidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel }) => {
             alt=""
           />
           <h2 className="text-lg font-medium capitalize">
-            {/* {props.ride?.user.fullname.firstname} */}
-            firstname
+            {ride?.user.fullname.firstname}
           </h2>
         </div>
         <h5 className="text-lg font-semibold">2.2 KM</h5>
@@ -44,8 +68,7 @@ const ConfirmRidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel }) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
-                Pickup
+                {ride?.pickup}
               </p>
             </div>
           </div>
@@ -54,8 +77,7 @@ const ConfirmRidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel }) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
-                Destination
+                {ride?.destination}
               </p>
             </div>
           </div>
@@ -63,8 +85,7 @@ const ConfirmRidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel }) => {
             <i className="ri-currency-line"></i>
             <div>
               <h3 className="text-lg font-medium">
-                {/* ₹{props.ride?.fare}  */}
-                Fare
+                ₹{ride?.fare} 
                 </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>

@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
 //the details of the ride to be shown
 
-const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
+const RidePopUp = ({
+  setRidePopupPanel,
+  setConfirmRidePopupPanel,
+  ride,
+  confirmRide,
+}) => {
   return (
     <div>
       <h5
@@ -21,10 +26,9 @@ const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
             alt=""
           />
           <h2 className="text-lg font-medium">
-            {/* {props.ride?.user.fullname.firstname +
+            {ride?.user.fullname.firstname +
               " " +
-              props.ride?.user.fullname.lastname} */}
-              FirstName + LastName
+              ride?.user.fullname.lastname}
           </h2>
         </div>
         <h5 className="text-lg font-semibold">2.2 KM</h5>
@@ -36,8 +40,7 @@ const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
-                Pickup
+                {ride?.pickup}
               </p>
             </div>
           </div>
@@ -46,8 +49,7 @@ const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
-                Destination
+                {ride?.destination}
               </p>
             </div>
           </div>
@@ -55,9 +57,8 @@ const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
             <i className="ri-currency-line"></i>
             <div>
               <h3 className="text-lg font-medium">
-                {/* ₹{props.ride?.fare}  */}
-                Fare
-                </h3>
+                ₹{ride?.fare} 
+              </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
           </div>
@@ -65,6 +66,7 @@ const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
         <div className="mt-5 w-full ">
           <button
             onClick={() => {
+              //if accept then show confirm pop up
               setConfirmRidePopupPanel(true);
             }}
             className=" bg-green-600 w-full text-white font-semibold p-2 px-10 rounded-lg"
@@ -75,6 +77,8 @@ const RidePopUp = ({ setRidePopupPanel, setConfirmRidePopupPanel  }) => {
           <button
             onClick={() => {
               setRidePopupPanel(false);
+              //so on accept confirm the ride(ride start is in confirm panel where we click on otp and then confirm)
+              confirmRide(ride);
             }}
             className="mt-2 w-full bg-gray-300 text-gray-700 font-semibold p-2 px-10 rounded-lg"
           >

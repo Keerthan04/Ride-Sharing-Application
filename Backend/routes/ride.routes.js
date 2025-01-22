@@ -22,4 +22,32 @@ router.get('/get-fare',
     query('destination').isString().isLength({min: 1}).withMessage('Invalid destination address'),
     rideController.getFare
 )
+
+//confirm ride->captain will confirm the ride the first pop up shown to captain and confirm then this route is called
+router.post(
+    "/confirm",
+    authMiddleware.authCaptain,
+    body("rideId").isMongoId().withMessage("Invalid ride id"),
+    rideController.confirmRide
+);
+
+//when confirm done then the otp and all details asked then start the ride so then this is called
+router.get(
+    "/start-ride",
+    authMiddleware.authCaptain,
+    query("rideId").isMongoId().withMessage("Invalid ride id"),
+    query("otp")
+        .isString()
+        .isLength({ min: 6, max: 6 })
+        .withMessage("Invalid OTP"),
+    rideController.startRide
+);
+
+//to end the ride in the finish ride pop up this will be called
+router.post(
+    "/end-ride",
+    authMiddleware.authCaptain,
+    body("rideId").isMongoId().withMessage("Invalid ride id"),
+    rideController.endRide
+);
 module.exports = router;

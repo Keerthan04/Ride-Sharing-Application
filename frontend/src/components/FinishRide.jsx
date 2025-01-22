@@ -1,9 +1,37 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //when riding the captain can finish the ride by clicking on the "Complete Ride" button and this is shown at time of when the captain is riding the user
 
 //so when in captain-riding route and on click on the above arrow or complete ride button, the finish ride panel will be shown and here he can click finish and backend and all call will go and redirect to captain home page
-const FinishRide = ({ setFinishRidePanel }) => {
+
+const FinishRide = ({
+  ride,
+  setFinishRidePanel }) => {
+
+  const navigate = useNavigate();
+
+  //function to say the ride is ended and then redirect to captain home page
+  async function endRide() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/end-ride`,
+      {
+        rideId: ride._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      navigate("/captain-home");
+    }
+  }
+
+
   return (
     <div>
       <h5
@@ -23,8 +51,8 @@ const FinishRide = ({ setFinishRidePanel }) => {
             alt=""
           />
           <h2 className="text-lg font-medium">
-            {/* {props.ride?.user.fullname.firstname} */}
-            user name
+            {ride?.user.fullname.firstname}
+
           </h2>
         </div>
         <h5 className="text-lg font-semibold">2.2 KM</h5>
@@ -36,8 +64,7 @@ const FinishRide = ({ setFinishRidePanel }) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
-                pickup
+                {ride?.pickup}
               </p>
             </div>
           </div>
@@ -46,8 +73,7 @@ const FinishRide = ({ setFinishRidePanel }) => {
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
-                destination
+                {ride?.destination}
               </p>
             </div>
           </div>
@@ -55,8 +81,7 @@ const FinishRide = ({ setFinishRidePanel }) => {
             <i className="ri-currency-line"></i>
             <div>
               <h3 className="text-lg font-medium">
-                {/* ₹{props.ride?.fare}  */}
-                Fare
+                ₹{ride?.fare}
               </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
@@ -64,7 +89,10 @@ const FinishRide = ({ setFinishRidePanel }) => {
         </div>
 
         <div className="mt-10 w-full">
-          <button className="w-full mt-5 flex  text-lg justify-center bg-green-600 text-white font-semibold p-3 rounded-lg">
+          <button
+          //in the finish ride panel when the captain clicks on the finish ride button the endRide function will be called and the ride will be ended
+          onClick={endRide}
+          className="w-full mt-5 flex  text-lg justify-center bg-green-600 text-white font-semibold p-3 rounded-lg">
             Finish Ride
           </button>
         </div>

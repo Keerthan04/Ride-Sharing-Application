@@ -10,6 +10,7 @@ import WaitingForDriver from "../components/WaitingForDriver";
 import axios from "axios";
 import {SocketContext} from "../context/SocketContext";
 import {UserDataContext} from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     //all the states are used to handle the state of the application
@@ -25,8 +26,9 @@ const Home = () => {
     const [activeField, setActiveField] = useState(null);
     const [fare, setFare] = useState({});
     const [vehicleType, setVehicleType] = useState('car');
+    const [ride, setRide] = useState(null);
 
-
+    const navigate = useNavigate();
     //all the refs are used to get the reference of the element in the dom
     const panelRef = useRef(null);
     const panelCloseRef = useRef(null);
@@ -44,7 +46,19 @@ const Home = () => {
       socket.emit("join", { userType: "user", userId: user._id });
     }, [socket, user]);
 
+    //so once the ride is confirmed by the captain then the ride-confirmed event is triggered and the ride details are sent to the user so that the user can see the details of the ride
+    socket.on("ride-confirmed", (ride) => {
+      setvehicleFound(false);
+      setWaitingForDriver(true);//so now close the vehicle found panel and open the waiting for driver panel
+      setRide(ride);
+    });
 
+    //so once the ride is started by the captain then the ride-started event is triggered and the ride details are sent to the user so that the user can see the details of the ride
+    socket.on("ride-started", (ride) => {
+      console.log("ride");
+      setWaitingForDriver(false);
+      navigate("/riding", { state: { ride } }); // Updated navigate to include ride data
+    });
 
     //Todo->on each letter change the request is going to the backend(so too many requests are going so we need to optimize this(like debouncing))
     //so for both it is the input as query params so we are using the same function(same input in params and sending the response)
@@ -350,9 +364,8 @@ const Home = () => {
         className="fixed w-full  z-10 bottom-0  bg-white px-3 py-6 pt-12"
       >
         <WaitingForDriver
+          ride= {ride}
           setWaitingForDriver={setWaitingForDriver}
-          setvehicleFound={setvehicleFound}
-          waitingForDriver={waitingForDriver}
         />
       </div>
     </div>

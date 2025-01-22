@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import 'remixicon/fonts/remixicon.css';
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -9,6 +9,9 @@ const CaptainRiding = () => {
 
     const [finishRidePanel, setFinishRidePanel] = useState(false);
     const finishRidePanelRef = useRef(null);
+
+    const location = useLocation();//to get the ride data from the previous page as state it is passed from the previous page(when in conrfim ride popup we click on confirm then we are redirected to this page)
+    const rideData = location.state?.ride;//get the ride data from the location state
 
     useGSAP(
       function () {
@@ -73,7 +76,10 @@ const CaptainRiding = () => {
         ref={finishRidePanelRef}
         className="fixed w-full z-[500] bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
-        <FinishRide setFinishRidePanel={setFinishRidePanel} />
+        <FinishRide
+        //so when the finish ride panel is shown the ride data is passed to the finish ride component this panel shown when the captain clicks on the complete ride button
+        ride = {rideData}
+        setFinishRidePanel={setFinishRidePanel} />
       </div>
     </div>
   );

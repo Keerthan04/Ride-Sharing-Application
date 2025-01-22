@@ -1,18 +1,18 @@
-/* eslint-disable no-unused-vars */
+
 /* eslint-disable react/prop-types */
 //this panel is to show the driver details like after looking for driver then this panel will open
+//this panel is that the ride has been confirmed by captain and user is waiting for driver to come and pick up once pick up done then start ride event will be triggered and this will close and will go to riding page
 
 const WaitingForDriver = ({
   setWaitingForDriver,
-  setvehicleFound,
-  waitingForDriver,
+  ride
 }) => {
   return (
     <div>
       <h5
         className="p-1 text-center w-[93%] absolute top-0"
         onClick={() => {
-          waitingForDriver(false);
+          setWaitingForDriver(false);
         }}
       >
         <i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i>
@@ -26,17 +26,15 @@ const WaitingForDriver = ({
         />
         <div className="text-right">
           <h2 className="text-lg font-medium capitalize">
-            {/* {props.ride?.captain.fullname.firstname} */}
-            firstname
+            {ride?.captain.fullname.firstname}
           </h2>
           <h4 className="text-xl font-semibold -mt-1 -mb-1">
             {/* {props.ride?.captain.vehicle.plate} */}
             vehcicle plate
           </h4>
           <p className="text-sm text-gray-600">Maruti Suzuki Alto</p>
-          <h1 className="text-lg font-semibold"> 
-            {/* {props.ride?.otp}  */}
-            OTP
+          <h1 className="text-lg font-semibold">
+            {ride?.otp}
             </h1>
         </div>
       </div>
@@ -48,8 +46,7 @@ const WaitingForDriver = ({
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.pickup} */}
-                pickup
+                {ride?.pickup}
               </p>
             </div>
           </div>
@@ -58,8 +55,7 @@ const WaitingForDriver = ({
             <div>
               <h3 className="text-lg font-medium">562/11-A</h3>
               <p className="text-sm -mt-1 text-gray-600">
-                {/* {props.ride?.destination} */}
-                destination
+                {ride?.destination}
               </p>
             </div>
           </div>
@@ -67,8 +63,7 @@ const WaitingForDriver = ({
             <i className="ri-currency-line"></i>
             <div>
               <h3 className="text-lg font-medium">
-                {/* ₹{props.ride?.fare}  */}
-                Fare
+                ₹{ride?.fare}
                 </h3>
               <p className="text-sm -mt-1 text-gray-600">Cash Cash</p>
             </div>
