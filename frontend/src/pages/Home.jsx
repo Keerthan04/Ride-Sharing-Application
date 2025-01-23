@@ -55,7 +55,6 @@ const Home = () => {
 
     //so once the ride is started by the captain then the ride-started event is triggered and the ride details are sent to the user so that the user can see the details of the ride
     socket.on("ride-started", (ride) => {
-      console.log("ride");
       setWaitingForDriver(false);
       navigate("/riding", { state: { ride } }); // Updated navigate to include ride data
     });

@@ -29,12 +29,11 @@ const WaitingForDriver = ({
             {ride?.captain.fullname.firstname}
           </h2>
           <h4 className="text-xl font-semibold -mt-1 -mb-1">
-            {/* {props.ride?.captain.vehicle.plate} */}
-            vehcicle plate
+            {ride?.captain.vehicle.plate}
           </h4>
           <p className="text-sm text-gray-600">Maruti Suzuki Alto</p>
           <h1 className="text-lg font-semibold">
-            {ride?.otp}
+            OTP:{ride?.otp}
             </h1>
         </div>
       </div>
